@@ -1,7 +1,3 @@
-#
-# This is the model of Bruno with the SLEEP values replaced by those mentioned in the datasheet of CC2538 and CC1200
-#
-
 class SlotType:
     TxDataRxAck = 1
     RxDataTxAck = 2
