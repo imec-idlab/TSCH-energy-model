@@ -1,3 +1,7 @@
+#
+# This is the model of Bruno with the SLEEP values replaced by those mentioned in the datasheet of CC2538 and CC1200
+#
+
 class SlotType:
     TxDataRxAck = 1
     RxDataTxAck = 2
@@ -18,21 +22,21 @@ def Model(radio = 'CC2538', txPower = 0):
     TsShortGT        =  16 / 32768.0 * 1000000   #  500us
 
     if radio == 'CC2538':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 18.5253
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 18.5253
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 32.1613
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 36.0883
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 12.1690
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 12.1690
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 25.5274
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 29.6143
+        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 13.97
+        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 13.97
+        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 26.94
+        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 31.14
+        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 10.06
+        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 10.06
+        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 23.16
+        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 27.18
 
         if txPower == 3:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 37.9312
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 31.4720
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 33.04
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 29.01
         elif txPower == 0:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 36.1228
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 29.6779
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 31.47
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 27.55
         else:
             raise RuntimeError("Unsupported txPower value")
 
@@ -44,21 +48,21 @@ def Model(radio = 'CC2538', txPower = 0):
         MaxRxAckPrepare  =  10 / 32768.0 * 1000000   #  305us
 
     elif radio == 'CC1200':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 18.5977
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 21.0067
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 57.3220
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 43.3729
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 12.4005
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 15.0322
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 50.7769
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 38.2895
+        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 15.06
+        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 17.49
+        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 50.63
+        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 40.13
+        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 11.42
+        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 13.82
+        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 46.73
+        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 36.18
 
         if txPower == 14:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 102.7338
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 96.6123
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 91.94
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 88.25
         elif txPower == 0:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 59.3448
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 53.6732
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 54.26
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 50.24
         else:
             raise RuntimeError("Unsupported txPower value")
 
@@ -370,9 +374,6 @@ def Model(radio = 'CC2538', txPower = 0):
         return round(consumption / 1000, 2)  # mA x us / 1000 = uC
 
     return calcConsumption
-
-
-
 
 
 PACKET_LENGTH = 125  # Excludes CRC, maximum allowed value is 125
