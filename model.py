@@ -64,8 +64,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationTxData            = 21000
+                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 160 - DurationTxDataStart
                 DurationRxAckOffsetStart  = 75  # ti5
                 DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
                 DurationRxAckPrepare      = 587  # ti6
@@ -73,7 +72,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationRxAckListenStart  = 58  # ti7
                 DurationRxAckListen       = DelayRx + TsShortGT - DurationRxAckListenStart
                 DurationRxAckStart        = 15  # ti8
-                DurationRxAck             = (1 + ACK_LENGTH) * 32 - DurationRxAckStart
+                DurationRxAck             = (1 + ACK_LENGTH) * 160 - DurationRxAckStart
                 DurationTxProc            = 619  # ti9
                 DurationSleep             = TsSlotDuration - DurationTxProc - DurationRxAck - DurationRxAckStart - TsTxAckDelay - DurationTxData - DurationTxDataStart - TsTxOffset
 
@@ -105,8 +104,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationTxData            = 21000
+                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 160 - DurationTxDataStart
                 DurationTxProc            = 109  # ti5
                 DurationSleep             = TsSlotDuration - DurationTxProc - DurationTxData - DurationTxDataStart - TsTxOffset
 
@@ -130,8 +128,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationTxData            = 21000
+                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 160 - DurationTxDataStart
                 DurationRxAckOffsetStart  = 75  # ti5
                 DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
                 DurationRxAckPrepare      = 587  # ti6
@@ -167,8 +164,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationRxDataListenStart = 58  # ri3
                 DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
                 DurationRxDataStart       = 15  # ri4
-                # DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
-                DurationRxData            = 21000
+                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 160 - DurationRxDataStart
                 DurationTxAckOffsetStart  = 30 + (190 + (packetSize * 8.439)) + 142  # ri5
                 DurationTxAckOffset       = DurationRT5 - DurationTxAckOffsetStart
                 DurationTxAckPrepare      = 930  # ri6
@@ -176,7 +172,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationTxAckDelayStart   = 58  # ri7
                 DurationTxAckDelay        = DelayTx - DurationTxAckDelayStart
                 DurationTxAckStart        = 15  # ri8
-                DurationTxAck             = (1 + ACK_LENGTH) * 32 - DurationTxAckStart
+                DurationTxAck             = (1 + ACK_LENGTH) * 160 - DurationTxAckStart
                 DurationRxProc            = 135  # ri9
                 DurationSleep             = TsSlotDuration - DurationRxProc - DurationTxAck - DurationTxAckStart - TsTxAckDelay - DurationRxData - DurationRxDataStart - TsTxOffset
 
@@ -208,8 +204,7 @@ def Model(radio = 'CC1200', txPower = 10):
                 DurationRxDataListenStart = 58  # ri3
                 DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
                 DurationRxDataStart       = 15  # ri4
-                # DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
-                DurationRxData            = 21000
+                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 160 - DurationRxDataStart
                 DurationRxProc            = 30 + (190 + (packetSize * 8.439)) + 268  # ri5
                 DurationSleep             = TsSlotDuration - DurationRxProc - DurationRxData - DurationRxDataStart - TsTxOffset
 
