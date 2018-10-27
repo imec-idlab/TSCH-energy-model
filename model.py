@@ -7,7 +7,7 @@ class SlotType:
     Sleep       = 6
     TxDataRxAckMissing = 7
 
-def Model(radio = 'CC2538', txPower = 0):
+def Model(radio = 'CC1200', txPower = 10):
     ACK_LENGTH = 27
     CRC_LENGTH = 2
 
@@ -17,48 +17,22 @@ def Model(radio = 'CC2538', txPower = 0):
     TsLongGT         =  43 / 32768.0 * 1000000   # 1300us
     TsShortGT        =  16 / 32768.0 * 1000000   #  500us
 
-    if radio == 'CC2538':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 13.97
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 13.97
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 26.94
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 31.14
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 10.06
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 10.06
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 23.16
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 27.18
+    if radio == 'CC1200':
+        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 13.00012
+        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 14.5
+        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 36.5
+        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 36.5
+        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 0.60012
+        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 2.1
+        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 24.1
+        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 24.1
 
-        if txPower == 3:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 33.04
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 29.01
-        elif txPower == 0:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 31.47
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 27.55
-        else:
-            raise RuntimeError("Unsupported txPower value")
-
-        DelayTx          =  12 / 32768.0 * 1000000   #  366us
-        DelayRx          =   0 / 32768.0 * 1000000   #    0us
-        MaxTxDataPrepare =  66 / 32768.0 * 1000000   # 2014us
-        MaxRxDataPrepare =  33 / 32768.0 * 1000000   # 1007us
-        MaxTxAckPrepare  =  22 / 32768.0 * 1000000   #  671us
-        MaxRxAckPrepare  =  10 / 32768.0 * 1000000   #  305us
-
-    elif radio == 'CC1200':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 15.06
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 17.49
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 50.63
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 40.13
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 11.42
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 13.82
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 46.73
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 36.18
-
-        if txPower == 14:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 91.94
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 88.25
-        elif txPower == 0:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 54.26
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 50.24
+        if txPower == 10:
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 49
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 36.6
+        elif txPower == 14:
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 59
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 46.6
         else:
             raise RuntimeError("Unsupported txPower value")
 
@@ -82,27 +56,7 @@ def Model(radio = 'CC2538', txPower = 0):
         consumption = 0
 
         if slotType == SlotType.TxDataRxAck:
-            if radio == 'CC2538':
-                DurationTxDataOffsetStart = 105  # ti1
-                DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
-                DurationTxDataPrepare     = 33 + (5 + packetSize * 0.875) + 22  # ti2
-                DurationTxDataReady       = MaxTxDataPrepare - DurationTxDataPrepare
-                DurationTxDataDelayStart  = 17  # ti3
-                DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
-                DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationRxAckOffsetStart  = 32  # ti5
-                DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
-                DurationRxAckPrepare      = 38  # ti6
-                DurationRxAckReady        = MaxRxAckPrepare - DurationRxAckPrepare
-                DurationRxAckListenStart  = 17  # ti7
-                DurationRxAckListen       = DelayRx + TsShortGT - DurationRxAckListenStart
-                DurationRxAckStart        = 16  # ti8
-                DurationRxAck             = (1 + ACK_LENGTH) * 32 - DurationRxAckStart
-                DurationTxProc            = 225  # ti9
-                DurationSleep             = TsSlotDuration - DurationTxProc - DurationRxAck - DurationRxAckStart - TsTxAckDelay - DurationTxData - DurationTxDataStart - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationTxDataOffsetStart = 105  # ti1
                 DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
                 DurationTxDataPrepare     = 291 + (69 + packetSize * 8.152) + 378  # ti2
@@ -110,7 +64,8 @@ def Model(radio = 'CC2538', txPower = 0):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                DurationTxData            = 21000
                 DurationRxAckOffsetStart  = 75  # ti5
                 DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
                 DurationRxAckPrepare      = 587  # ti6
@@ -142,19 +97,7 @@ def Model(radio = 'CC2538', txPower = 0):
             consumption += DurationSleep * CONSUMPTION_CPU_SLEEP_RADIO_SLEEP
 
         elif slotType == SlotType.TxData:
-            if radio == 'CC2538':
-                DurationTxDataOffsetStart = 105  # ti1
-                DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
-                DurationTxDataPrepare     = 33 + (5 + packetSize * 0.875) + 22  # ti2
-                DurationTxDataReady       = MaxTxDataPrepare - DurationTxDataPrepare
-                DurationTxDataDelayStart  = 17  # ti3
-                DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
-                DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationTxProc            = 72  # ti5
-                DurationSleep             = TsSlotDuration - DurationTxProc - DurationTxData - DurationTxDataStart - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationTxDataOffsetStart = 105  # ti1
                 DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
                 DurationTxDataPrepare     = 291 + (69 + packetSize * 8.152) + 378  # ti2
@@ -162,7 +105,8 @@ def Model(radio = 'CC2538', txPower = 0):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                DurationTxData            = 21000
                 DurationTxProc            = 109  # ti5
                 DurationSleep             = TsSlotDuration - DurationTxProc - DurationTxData - DurationTxDataStart - TsTxOffset
 
@@ -178,25 +122,7 @@ def Model(radio = 'CC2538', txPower = 0):
             consumption += DurationSleep * CONSUMPTION_CPU_SLEEP_RADIO_SLEEP
 
         elif slotType == SlotType.TxDataRxAckMissing:
-            if radio == 'CC2538':
-                DurationTxDataOffsetStart = 105  # ti1
-                DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
-                DurationTxDataPrepare     = 33 + (5 + packetSize * 0.875) + 22  # ti2
-                DurationTxDataReady       = MaxTxDataPrepare - DurationTxDataPrepare
-                DurationTxDataDelayStart  = 17  # ti3
-                DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
-                DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
-                DurationRxAckOffsetStart  = 32  # ti5
-                DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
-                DurationRxAckPrepare      = 38  # ti6
-                DurationRxAckReady        = MaxRxAckPrepare - DurationRxAckPrepare
-                DurationRxAckListenStart  = 17  # ti7
-                DurationRxAckListen       = DelayRx + 2*TsShortGT - DurationRxAckListenStart
-                DurationTxProc            = 44  # tie5
-                DurationSleep             = TsSlotDuration - DurationTxProc - TsShortGT - TsTxAckDelay - DurationTxData - DurationTxDataStart - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationTxDataOffsetStart = 105  # ti1
                 DurationTxDataOffset      = DurationTT1 - DurationTxDataOffsetStart
                 DurationTxDataPrepare     = 291 + (69 + packetSize * 8.152) + 378  # ti2
@@ -204,7 +130,8 @@ def Model(radio = 'CC2538', txPower = 0):
                 DurationTxDataDelayStart  = 58  # ti3
                 DurationTxDataDelay       = DelayTx - DurationTxDataDelayStart
                 DurationTxDataStart       = 16  # ti4
-                DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                # DurationTxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationTxDataStart
+                DurationTxData            = 21000
                 DurationRxAckOffsetStart  = 75  # ti5
                 DurationRxAckOffset       = DurationTT5 - DurationRxAckOffsetStart
                 DurationRxAckPrepare      = 587  # ti6
@@ -232,27 +159,7 @@ def Model(radio = 'CC2538', txPower = 0):
             consumption += DurationSleep * CONSUMPTION_CPU_SLEEP_RADIO_SLEEP
 
         elif slotType == SlotType.RxDataTxAck:
-            if radio == 'CC2538':
-                DurationRxDataOffsetStart = 126  # ri1
-                DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
-                DurationRxDataPrepare     = 38  # ri2
-                DurationRxDataReady       = MaxRxDataPrepare - DurationRxDataPrepare
-                DurationRxDataListenStart = 17  # ri3
-                DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
-                DurationRxDataStart       = 17  # ri4
-                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
-                DurationTxAckOffsetStart  = 25 + (7 + (packetSize * 0.91)) + 94 # ri5
-                DurationTxAckOffset       = DurationRT5 - DurationTxAckOffsetStart
-                DurationTxAckPrepare      = 153  # ri6
-                DurationTxAckReady        = MaxTxAckPrepare - DurationTxAckPrepare
-                DurationTxAckDelayStart   = 17  # ri7
-                DurationTxAckDelay        = DelayTx - DurationTxAckDelayStart
-                DurationTxAckStart        = 16  # ri8
-                DurationTxAck             = (1 + ACK_LENGTH) * 32 - DurationTxAckStart
-                DurationRxProc            = 94  # ri9
-                DurationSleep             = TsSlotDuration - DurationRxProc - DurationTxAck - DurationTxAckStart - TsTxAckDelay - DurationRxData - DurationRxDataStart - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationRxDataOffsetStart = 126  # ri1
                 DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
                 DurationRxDataPrepare     = 676  # ri2
@@ -260,7 +167,8 @@ def Model(radio = 'CC2538', txPower = 0):
                 DurationRxDataListenStart = 58  # ri3
                 DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
                 DurationRxDataStart       = 15  # ri4
-                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
+                # DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
+                DurationRxData            = 21000
                 DurationTxAckOffsetStart  = 30 + (190 + (packetSize * 8.439)) + 142  # ri5
                 DurationTxAckOffset       = DurationRT5 - DurationTxAckOffsetStart
                 DurationTxAckPrepare      = 930  # ri6
@@ -292,19 +200,7 @@ def Model(radio = 'CC2538', txPower = 0):
             consumption += DurationSleep * CONSUMPTION_CPU_SLEEP_RADIO_SLEEP
 
         elif slotType == SlotType.RxData:
-            if radio == 'CC2538':
-                DurationRxDataOffsetStart = 126  # ri1
-                DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
-                DurationRxDataPrepare     = 38  # ri2
-                DurationRxDataReady       = MaxRxDataPrepare - DurationRxDataPrepare
-                DurationRxDataListenStart = 17  # ri3
-                DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
-                DurationRxDataStart       = 17  # ri4
-                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
-                DurationRxProc            = 25 + (7 + (packetSize * 0.91)) + 166  # ri5
-                DurationSleep             = TsSlotDuration - DurationRxProc - DurationRxData - DurationRxDataStart - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationRxDataOffsetStart = 126  # ri1
                 DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
                 DurationRxDataPrepare     = 676  # ri2
@@ -312,7 +208,8 @@ def Model(radio = 'CC2538', txPower = 0):
                 DurationRxDataListenStart = 58  # ri3
                 DurationRxDataListen      = DelayRx + TsLongGT - DurationRxDataListenStart
                 DurationRxDataStart       = 15  # ri4
-                DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
+                # DurationRxData            = (1 + packetSize + CRC_LENGTH) * 32 - DurationRxDataStart
+                DurationRxData            = 21000
                 DurationRxProc            = 30 + (190 + (packetSize * 8.439)) + 268  # ri5
                 DurationSleep             = TsSlotDuration - DurationRxProc - DurationRxData - DurationRxDataStart - TsTxOffset
 
@@ -328,17 +225,7 @@ def Model(radio = 'CC2538', txPower = 0):
             consumption += DurationSleep * CONSUMPTION_CPU_SLEEP_RADIO_SLEEP
 
         elif slotType == SlotType.RxIdle:
-            if radio == 'CC2538':
-                DurationRxDataOffsetStart = 126  # ri1
-                DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
-                DurationRxDataPrepare     = 38  # ri2
-                DurationRxDataReady       = MaxRxDataPrepare - DurationRxDataPrepare
-                DurationRxDataListenStart = 17  # ri3
-                DurationRxDataListen      = DelayRx + 2*TsLongGT - DurationRxDataListenStart
-                DurationRxProc            = 25  # rie2
-                DurationSleep             = TsSlotDuration - DurationRxProc - TsLongGT - TsTxOffset
-
-            elif radio == 'CC1200':
+            if radio == 'CC1200':
                 DurationRxDataOffsetStart = 126  # ri1
                 DurationRxDataOffset      = DurationRT1 - DurationRxDataOffsetStart
                 DurationRxDataPrepare     = 676  # ri2
@@ -384,11 +271,6 @@ def printModelValues(model):
     print('        TxDataRxAckMissing: ' + str(model(SlotType.TxDataRxAckMissing, PACKET_LENGTH)) + ' uC')
 
 print('Packet length: ' + str(PACKET_LENGTH))
-print('CC2538 radio:')
-print('    3 dBm:')
-printModelValues(Model('CC2538', 3))
-print('    0 dBm:')
-printModelValues(Model('CC2538', 0))
 print('CC1200 radio:')
 print('   14 dBm:')
 printModelValues(Model('CC1200', 14))
