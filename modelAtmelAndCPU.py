@@ -23,21 +23,21 @@ def Model(radio = 'CC1200', txPower = 10):
     # TsShortGT        =  80 / 32768.0 * 1000000   #  500us
 
     if radio == 'CC1200':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 0.00012
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 1.5
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 23.5
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 23.5
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 0.00012
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 1.5
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 23.5
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 23.5
+        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 0.0 + 3.38 # + ACTIVE Cortex M3
+        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 0.0 + 3.38
+        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 0.0 + 3.38
+        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 0.0 + 3.38
+        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 0.0
+        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 0.0
+        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 0.0
+        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 0.0
 
         if txPower == 10:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 36
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 36
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 0.0 + 3.38
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 0.0
         elif txPower == 14:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 46
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 46
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 0.0 + 3.38
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 0.0
         else:
             raise RuntimeError("Unsupported txPower value")
 
@@ -261,7 +261,7 @@ def Model(radio = 'CC1200', txPower = 10):
         else:
             raise RuntimeError("Invalid slot type")
 
-        return round(consumption / 1000, 2)  # mA x us / 1000 = uC
+        return round(consumption / 1000, 4)  # mA x us / 1000 = uC
 
     return calcConsumption
 
@@ -269,7 +269,7 @@ def Model(radio = 'CC1200', txPower = 10):
 PACKET_LENGTH = 125  # Excludes CRC, maximum allowed value is 125
 
 def printModelValues(model):
-    VOLTS = 3.0
+    VOLTS = 1.8
     print('uC:')
     print('        TxDataRxAck: ' + str(model(SlotType.TxDataRxAck, PACKET_LENGTH)) + ' uC')
     print('        RxDataTxAck: ' + str(model(SlotType.RxDataTxAck, PACKET_LENGTH)) + ' uC')

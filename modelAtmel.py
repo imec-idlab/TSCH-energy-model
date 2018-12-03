@@ -23,21 +23,21 @@ def Model(radio = 'CC1200', txPower = 10):
     # TsShortGT        =  80 / 32768.0 * 1000000   #  500us
 
     if radio == 'CC1200':
-        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 0.00012
-        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 1.5
-        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 23.5
-        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 23.5
-        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 0.00012
-        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 1.5
-        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 23.5
-        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 23.5
+        CONSUMPTION_CPU_ACTIVE_RADIO_SLEEP  = 0.00003
+        CONSUMPTION_CPU_ACTIVE_RADIO_IDLE   = 6.2
+        CONSUMPTION_CPU_ACTIVE_RADIO_RX     = 28
+        CONSUMPTION_CPU_ACTIVE_RADIO_LISTEN = 6.2
+        CONSUMPTION_CPU_SLEEP_RADIO_SLEEP   = 0.00003
+        CONSUMPTION_CPU_SLEEP_RADIO_IDLE    = 6.2
+        CONSUMPTION_CPU_SLEEP_RADIO_RX      = 28
+        CONSUMPTION_CPU_SLEEP_RADIO_LISTEN  = 6.2
 
         if txPower == 10:
             CONSUMPTION_CPU_ACTIVE_RADIO_TX = 36
             CONSUMPTION_CPU_SLEEP_RADIO_TX  = 36
         elif txPower == 14:
-            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 46
-            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 46
+            CONSUMPTION_CPU_ACTIVE_RADIO_TX = 62
+            CONSUMPTION_CPU_SLEEP_RADIO_TX  = 62
         else:
             raise RuntimeError("Unsupported txPower value")
 
@@ -261,7 +261,7 @@ def Model(radio = 'CC1200', txPower = 10):
         else:
             raise RuntimeError("Invalid slot type")
 
-        return round(consumption / 1000, 2)  # mA x us / 1000 = uC
+        return round(consumption / 1000, 4)  # mA x us / 1000 = uC
 
     return calcConsumption
 
